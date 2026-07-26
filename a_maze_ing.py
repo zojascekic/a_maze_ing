@@ -32,7 +32,7 @@ if __name__ == "__main__":
     path = solve_maze(maze, start, exit_cell)
     print_maze(maze, path, config, show_path=False)
 
-    # print(maze)
+    print(maze)
     # print(path)
     while True:
         user_input = input("\nOptions: \nregenerate maze: r \nshow path: s \nhide path: h \nchange wall color: c \nquit: q\n").lower().strip()
