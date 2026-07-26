@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-def print_maze(maze, path, config):
+def print_maze(maze, path, config, show_path=True, wall_color=None):
     # Top border
     print("+" + "---+" * config["WIDTH"])
 
@@ -13,7 +13,7 @@ def print_maze(maze, path, config):
                 line += '\x1b[32m█S█\x1b[0m'
             elif ((x, y) == config["EXIT"]):
                 line += '\x1b[35m█E█\x1b[0m'
-            elif ((x, y) in path):
+            elif path and ((x, y) in path) and show_path:
                 line += '\x1b[36m███\x1b[0m'
             elif maze[y][x] == 15:  # 42 pattern
                 line += '\x1b[93m███\x1b[0m'

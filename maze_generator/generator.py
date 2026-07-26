@@ -199,8 +199,11 @@ class MazeGenerator():
                 maze_integer[y].append(value)
         return maze_integer
 
-    def generate(self) -> list[list[int]]:
-        random.seed(self.seed)
+    def generate(self, seed=None) -> list[list[int]]:
+        if seed is not None:
+            random.seed(seed)
+        else:
+            random.seed(self.seed)
 
         maze = [[Cell() for i in range(self.width)]
                 for j in range(self.height)]
@@ -238,38 +241,6 @@ class MazeGenerator():
         maze_integer = self._cells_to_integers(maze)
         return maze_integer
 
-    def print_maze(self, maze, path):
-        # Top border
-        print("+" + "---+" * self.width)
-
-        for y in range(self.height):
-            # vertical walls
-            line = "|"
-            for x in range(self.width):
-                # entry coordinates
-                if ((x, y) == self.entry):
-                    line += '\x1b[32m###\x1b[0m'
-                elif ((x, y) == self.exit):
-                    line += '\x1b[34m###\x1b[0m'
-                elif ((x, y) in path):
-                    line += '\x1b[33m***\x1b[0m'
-                else:
-                    line += "   "
-                if maze[y][x].walls["east"]:
-                    line += "|"
-                else:
-                    line += " "
-            print(line)
-
-            # horizontal walls
-            line = "+"
-            for x in range(self.width):
-                if maze[y][x].walls["south"]:
-                    line += "---+"
-                else:
-                    line += "   +"
-            print(line)
-
     def save_maze(self, maze, filename):
         with open(filename, "w", encoding="utf-8") as file:
             for y in range(self.height):
@@ -290,31 +261,31 @@ class MazeGenerator():
                     file.write('\n')
 
 
-if __name__ == "__main__":
-    try:
-        # If executed as a package (python -m), relative import works
-        from ..config_parser import config_parser
-    except (ImportError, ValueError):
-        # If executed as a script,
-        # add parent folder to sys.path and import absolutely
-        import os
-        import sys
+# if __name__ == "__main__":
+#     try:
+#         # If executed as a package (python -m), relative import works
+#         from ..config_parser import config_parser
+#     except (ImportError, ValueError):
+#         # If executed as a script,
+#         # add parent folder to sys.path and import absolutely
+#         import os
+#         import sys
 
-        ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-        if ROOT not in sys.path:
-            sys.path.insert(0, ROOT)
-        from config_parser import config_parser
+#         ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+#         if ROOT not in sys.path:
+#             sys.path.insert(0, ROOT)
+#         from config_parser import config_parser
 
-    config = config_parser("/home/dvasilev/Documents/"
-                           "core/Milestone2/amazing/config.txt")
-    print(config)
+#     config = config_parser("/home/dvasilev/Documents/"
+#                            "core/Milestone2/amazing/config.txt")
+#     print(config)
 
-    gen = MazeGenerator(config)
-    try:
-        gen = MazeGenerator(config)
-        maze = gen.generate()
+#     gen = MazeGenerator(config)
+#     try:
+#         gen = MazeGenerator(config)
+#         maze = gen.generate()
 
-        print(maze)
+#         print(maze)
 
-    except Exception as e:
-        print(e)
+#     except Exception as e:
+#         print(e)
