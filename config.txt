@@ -9,7 +9,7 @@ HEIGHT=16
 
 # Coordinate tuples representing where the user enters and leaves the maze.
 # Format: X,Y (0-indexed)
-ENTRY=1,0 
+ENTRY=1,0
 EXIT=10,15
 
 # Perfect Maze setting (True = exactly 1 path with no loops; False = loops allowed)
