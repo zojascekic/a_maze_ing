@@ -58,6 +58,6 @@ def animate_path(maze, full_path, config, wall_color=None, delay=0.08):
     for i in range(1, len(full_path) + 1):
         print("\033[H\033[J", end="")
         partial_path = full_path[:i]
-        print_maze(maze, partial_path, config, show_path=True, 
+        print_maze(maze, partial_path, config, show_path=True,
                    wall_color=wall_color)
         time.sleep(delay)

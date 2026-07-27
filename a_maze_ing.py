@@ -37,9 +37,9 @@ if __name__ == "__main__":
     def clear_screen():
         cmd = 'cls' if os.name == 'nt' else 'clear'
         subprocess.run(cmd, shell=True)
-    
+
     while True:
-        clear_screen()     
+        clear_screen()
         print_maze(maze, path, config, show_path=path_showed, wall_color=color)
 
         user_input = input(
@@ -80,7 +80,7 @@ if __name__ == "__main__":
                 print("You entered invalid color... "
                       "Choose red, green, blue or yellow")
                 continue
-            print_maze(maze, path, config, 
+            print_maze(maze, path, config,
                        show_path=path_showed, wall_color=color)
         else:
             print("Invalid input. Please try again.")
