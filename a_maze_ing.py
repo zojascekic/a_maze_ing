@@ -43,16 +43,16 @@ if __name__ == "__main__":
         print_maze(maze, path, config, show_path=path_showed, wall_color=color)
 
         user_input = input(
-            "\nOptions: \n"
-            "regenerate maze: r \n"
-            "show path: s \n"
-            "hide path: h \n"
-            "change wall color: c \n"
-            "quit: q\n"
-            ).lower().strip()
+            "\n\x1b[1;3;37;46m Options \x1b[0m\n"
+            "  \x1b[3;36mregenerate maze:\x1b[0m \x1b[1;36mr\x1b[0m\n"
+            "  \x1b[3;32mshow path:\x1b[0m \x1b[1;32ms\x1b[0m\n"
+            "  \x1b[3;33mhide path:\x1b[0m \x1b[1;33mh\x1b[0m\n"
+            "  \x1b[3;35mchange wall color:\x1b[0m \x1b[1;35mc\x1b[0m\n"
+            "  \x1b[3;31mquit:\x1b[0m \x1b[1;31mq\x1b[0m\n> "
+        ).lower().strip()
 
         if user_input == 'q':
-            print("Goodbye!")
+            print("\x1b[1;32;40mGoodbye!\x1b[0m")
             break
         elif user_input == 'r':
             print("Regenerating maze...")

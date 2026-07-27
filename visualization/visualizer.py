@@ -31,9 +31,9 @@ def print_maze(maze, path, config, show_path=True, wall_color=None):
             elif ((x, y) == config["EXIT"]):
                 line += '\x1b[35m█E█\x1b[0m'
             elif path and ((x, y) in path) and show_path:
-                line += '\x1b[36m███\x1b[0m'
+                line += '\x1b[38;5;229m███\x1b[0m'
             elif maze[y][x] == 15:  # 42 pattern
-                line += '\x1b[93m███\x1b[0m'
+                line += '\x1b[38;5;45m███\x1b[0m'
             else:
                 line += "   "
             if maze[y][x] in [2, 3, 6, 7, 10, 11, 14, 15]:  # east wall closed
