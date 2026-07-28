@@ -25,7 +25,6 @@ if __name__ == "__main__":
             for i in range(len(path) - 1):
                 x1, y1 = path[i]
                 x2, y2 = path[i + 1]
-
                 dx = x2 - x1
                 dy = y2 - y1
 
@@ -37,7 +36,6 @@ if __name__ == "__main__":
                     directions.append("S")
                 elif dy == -1:
                     directions.append("N")
-
             return "".join(directions)
 
         def save_maze(maze, filename):
@@ -62,7 +60,6 @@ if __name__ == "__main__":
             clear_screen()
             print_maze(maze, path, config, show_path=path_showed,
                        wall_color=color)
-            print(path)
 
             user_input = input(
                 "\n\x1b[1;3;37;46m Options \x1b[0m\n"
@@ -85,6 +82,7 @@ if __name__ == "__main__":
                 path_showed = False
                 print_maze(maze, path, config, show_path=path_showed,
                            wall_color=color)
+                save_maze(maze, config["OUTPUT_FILE"])
             elif user_input == 's':
                 print("Showing path...")
                 animate_path(maze, path, config, wall_color=color)
