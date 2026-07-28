@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from config_parser import config_parser
-from maze_generator.generator import MazeGenerator
+from maze_generator import MazeGenerator
 from maze_solver.solver import solve_maze
 from visualization.visualizer import print_maze, animate_path
 import random
