@@ -4,13 +4,13 @@
 # - Key/Value pairs use 'KEY=VALUE' (lowercase/uppercase are both OK).
 
 # The grid dimensions of the maze (must be positive integers)
-WIDTH=16
-HEIGHT=16
+WIDTH=20
+HEIGHT=10
 
 # Coordinate tuples representing where the user enters and leaves the maze.
 # Format: X,Y (0-indexed)
 ENTRY=1,0
-EXIT=10,15
+EXIT=10,9
 
 # Perfect Maze setting (True = exactly 1 path with no loops; False = loops allowed)
 PERFECT=False

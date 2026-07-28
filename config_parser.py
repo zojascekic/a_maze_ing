@@ -86,9 +86,9 @@ def config_parser(filepath: str) -> MazeConfig:
         if entry_coords[1] < 0 or entry_coords[1] >= height:
             raise ValueError("Entry coordinate out of boundaries")
         if exit_coords[0] < 0 or exit_coords[0] >= width:
-            raise ValueError("Entry coordinate out of boundaries")
+            raise ValueError("Exit coordinate out of boundaries")
         if exit_coords[1] < 0 or exit_coords[1] >= height:
-            raise ValueError("Entry coordinate out of boundaries")
+            raise ValueError("Exit coordinate out of boundaries")
         if entry_coords == exit_coords:
             raise ValueError("Entry and Exit coordinates cannot be the same")
     return {
