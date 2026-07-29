@@ -98,7 +98,7 @@ def solve_maze(
     parent_map: Dict[Tuple[int, int], Tuple[int, int] | None] = {start: None}
 
     while queue:
-        current: Tuple[int, int] | None = queue.popleft()  # TODOOOO
+        current: Tuple[int, int] | None = queue.popleft()
         if current == exit:
             path = []
             while current is not None:
