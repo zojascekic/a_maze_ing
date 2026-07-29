@@ -19,10 +19,34 @@ def print_maze(maze: list[list[int]],
                show_path: bool | None = True,
                wall_color: str | None = None
                ) -> None:
+    """Render the maze grid and optional path in
+    the terminal using ANSI colors.
+
+    Args:
+        maze (list[list[int]]): Matrix of integer wall
+                                bitmasks representing the maze grid.
+        path (List[Tuple[int, int]] | None): Sequence of path
+                                                coordinates to render, or None.
+        config (MazeConfig): Configuration instance containing
+                             maze metadata and dimensions.
+        show_path (bool | None, optional): Flag to toggle rendering
+                                           of the path. Defaults to True.
+        wall_color (str | None, optional): Color key for
+                                           wall rendering. Defaults to None.
+    """
     color_code = COLOR_MAP.get(wall_color, "") if wall_color else ""
     reset_code = COLOR_MAP["reset"] if color_code else ""
 
     def w(char: str) -> str:
+        """Apply active wall color codes to a given character string.
+
+        Args:
+            char (str): Character string to wrap with ANSI color sequences.
+
+        Returns:
+            str: Colorized or plain character
+            string based on active color setting.
+        """
         return f"{color_code}{char}{reset_code}" if color_code else char
 
     # Top border
@@ -65,6 +89,20 @@ def animate_path(maze: List[List[int]],
                  wall_color: str | None = None,
                  delay: int | float | None = 0.08
                  ) -> None:
+    """Animate the step-by-step traversal of a solved path in the terminal.
+
+    Args:
+        maze (List[List[int]]): Matrix of integer wall bitmasks
+                                representing the maze grid.
+        full_path (List[Tuple[int, int]]): Ordered sequence of
+                                           path coordinates from start to exit.
+        config (MazeConfig): Configuration instance containing
+                             maze metadata and dimensions.
+        wall_color (str | None, optional): Color key for wall rendering.
+                                           Defaults to None.
+        delay (int | float | None, optional): Time pause in seconds
+                                              between steps. Defaults to 0.08.
+    """
     if not full_path:
         return
     for i in range(1, len(full_path) + 1):

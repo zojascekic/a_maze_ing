@@ -22,6 +22,17 @@ if __name__ == "__main__":
         color = None
 
         def path_to_directions(path: List[Tuple[int, int]]) -> str:
+            """Convert a sequence of grid coordinates into a cardinal
+            direction string (N, S, E, W).
+
+            Args:
+                path (List[Tuple[int, int]]): Ordered list of (x, y)
+                coordinates forming a continuous path.
+
+            Returns:
+                str: String of directional characters
+                representing step-by-step movements.
+            """
             directions = []
             for i in range(len(path) - 1):
                 x1, y1 = path[i]
@@ -40,6 +51,15 @@ if __name__ == "__main__":
             return "".join(directions)
 
         def save_maze(maze: List[List[int]], filename: str) -> None:
+            """Write the hex-encoded maze layout, start/exit
+            coordinates, and solution path to a file.
+
+            Args:
+                maze (List[List[int]]): Two-dimensional matrix
+                                        of integer wall bitmasks.
+                filename (str): Destination file path
+                                to write the formatted maze data.
+            """
             with open(filename, "w", encoding="utf-8") as file:
                 for y in range(config["HEIGHT"]):
                     for x in range(config["WIDTH"]):
@@ -55,6 +75,7 @@ if __name__ == "__main__":
         save_maze(maze, config["OUTPUT_FILE"])
 
         def clear_screen() -> None:
+            """Clear the terminal screen buffer using OS-specific commands."""
             cmd = 'cls' if os.name == 'nt' else 'clear'
             subprocess.run(cmd, shell=True)
 

@@ -1,11 +1,19 @@
-#!/usr/bin/env python3
-
 import random
 from config_parser import MazeConfig
 from typing import List, Dict, Any, cast
 
 
 class Cell():
+    """Represent a single grid cell within a maze.
+
+    Attributes:
+        visited (bool): Indicates whether the cell has been
+                        processed during generation.
+        blocked (bool): Indicates if the cell is blocked for
+                        custom structural patterns.
+        walls (dict[str, bool]): Status of the four surrounding
+                                walls (north, east, south, west).
+    """
     def __init__(self) -> None:
         self.visited = False
         self.blocked = False  # for 42 pattern
@@ -18,7 +26,23 @@ class Cell():
 
 
 class MazeGenerator():
+    """Generate 2D grid mazes with configurable dimensions,
+       patterns, and wall properties.
+
+    Attributes:
+        seed (int | None): Seed value used for deterministic random generation.
+        width (int): Horizontal cell count of the maze grid.
+        height (int): Vertical cell count of the maze grid.
+        perfect (bool): Indicating if the maze should have only one solution.
+        entry (Tuple[int, int]): Grid coordinates for the maze entry point.
+        exit (Tuple[int, int]): Grid coordinates for the maze exit point.
+    """
     def __init__(self, config: MazeConfig) -> None:
+        """Initialize generator instance attributes from config file.
+
+        Args:
+            config (MazeConfig): Object containing maze parameter values.
+        """
         self.seed = config["SEED"]
         self.width = config["WIDTH"]
         self.height = config["HEIGHT"]
@@ -27,6 +51,15 @@ class MazeGenerator():
         self.exit = config["EXIT"]
 
     def _set_42_pattern(self, maze: List[List[Cell]]) -> List[List[Cell]]:
+        """Embed a blocked numerical "42" shape into the grid layout.
+
+        Args:
+            maze (List[List[Cell]]): Grid matrix of Cell instances.
+
+        Returns:
+            List[List[Cell]]: Updated grid matrix with designated
+            cells set as blocked.
+        """
         pattern_width = 7
         pattern_height = 5
         if self.height <= pattern_width and self.width <= pattern_height:
@@ -63,6 +96,14 @@ class MazeGenerator():
         return maze
 
     def _get_starting_point(self, maze: List[List[Cell]]) -> List[List[int]]:
+        """Retrieve all grid coordinates that are not marked as blocked.
+
+        Args:
+            maze (List[List[Cell]]): Grid matrix of Cell instances.
+
+        Returns:
+            List[List[int]]: Collection of available coordinate pairs [x, y].
+        """
         non_blocked_sells = []
         for y in range(0, self.height):
             for x in range(0, self.width):
@@ -72,6 +113,17 @@ class MazeGenerator():
 
     def _get_unvisited_neighbors(self, x: int, y: int, maze: List[List[Cell]]
                                  ) -> List[Dict[str, Any]]:
+        """Find adjacent cells that have not been visited and are not blocked.
+
+        Args:
+            x (int): Horizontal coordinate of the current cell.
+            y (int): Vertical coordinate of the current cell.
+            maze (List[List[Cell]]): Grid matrix of Cell instances.
+
+        Returns:
+            List[Dict[str, Any]]: Metadata dicts for each
+            eligible neighboring cell.
+        """
         unvisited_neighbors = []
 
         if y > 0:
@@ -101,7 +153,28 @@ class MazeGenerator():
         return unvisited_neighbors
 
     def has_open_3x3(self, maze: List[List[Cell]], x: int, y: int) -> bool:
+        """Check whether removing walls forms a completely open 3x3 section.
+
+        Args:
+            maze (List[List[Cell]]): Grid matrix of Cell instances.
+            x (int): Horizontal coordinate of the target cell.
+            y (int): Vertical coordinate of the target cell.
+
+        Returns:
+            bool: True if an open 3x3 area overlaps the cell, False otherwise.
+        """
         def is_open_3x3(maze: List[List[Cell]], x: int, y: int) -> bool:
+            """Determine if a specific 3x3 window starting at (x, y)
+               has no internal walls.
+
+            Args:
+                maze (List[List[Cell]]): Grid matrix of Cell instances.
+                x (int): Top-left horizontal coordinate of the 3x3 window.
+                y (int): Top-left vertical coordinate of the 3x3 window.
+
+            Returns:
+                bool: True if all inner walls are absent, False otherwise.
+            """
             # x,y - top left corner position of 3x3 area
             # reject windows starting outside the maze
             if x < 0 or y < 0:
@@ -136,6 +209,16 @@ class MazeGenerator():
 
     def _remove_random_walls(self, maze: List[List[Cell]], walls_num: int
                              ) -> List[List[Cell]]:
+        """Remove additional walls at random to introduce
+        loops without creating 3x3 halls.
+
+        Args:
+            maze (List[List[Cell]]): Grid matrix of Cell instances.
+            walls_num (int): Target count of interior walls to remove.
+
+        Returns:
+            List[List[Cell]]: Modified grid matrix containing extra passages.
+        """
         removed = 0
         # to avoid cases when i cant remove given number of walls
         # without creating 3x3 hall
@@ -191,6 +274,16 @@ class MazeGenerator():
         return maze
 
     def _cells_to_integers(self, maze: List[List[Cell]]) -> List[List[int]]:
+        """Convert Cell objects into bitmask integers
+        representing wall configurations.
+
+        Args:
+            maze (List[List[Cell]]): Grid matrix of Cell instances.
+
+        Returns:
+            List[List[int]]: Bitmask integer
+            matrix encoding wall presence per cell.
+        """
         maze_integer: List[List[int]] = [[] * self.width] * self.height
         for y in range(self.height):
             maze_integer[y] = []
@@ -208,6 +301,20 @@ class MazeGenerator():
         return maze_integer
 
     def generate(self, seed: int | None = None) -> list[list[int]]:
+        """Execute the maze generation algorithm and return a
+        bitmask matrix representation.
+
+        Args:
+            seed (int | None, optional): Override seed for
+            the random number generator.
+
+        Returns:
+            list[list[int]]: Two-dimensional matrix of integer wall bitmasks.
+
+        Raises:
+            ValueError: If entry or exit coordinates
+            overlap with the "42" pattern.
+        """
         if seed is not None:
             random.seed(seed)
         else:
@@ -246,6 +353,5 @@ class MazeGenerator():
         if not self.perfect:
             walls_num = (self.height * self.width) // 10
             maze = self._remove_random_walls(maze, walls_num)
-            # self.print_maze(maze)
         maze_integer = self._cells_to_integers(maze)
         return maze_integer

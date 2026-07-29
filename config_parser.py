@@ -4,6 +4,16 @@ from typing import Optional
 
 
 class MazeConfig(TypedDict):
+    """Represent the structural configuration schema for maze generation.
+        Attributes:
+            WIDTH (int): Horizontal dimension of the maze grid.
+            HEIGHT (int): Vertical dimension of the maze grid.
+            ENTRY (Tuple[int, int]): Starting grid coordinates as (x, y).
+            EXIT (Tuple[int, int]): Ending grid coordinates as (x, y).
+            PERFECT (bool): Flag indicating if the maze is loop-free.
+            OUTPUT_FILE (str): Target filepath for saving generated maze.
+            SEED (Optional[int]): Random seed for deterministic generation.
+        """
     WIDTH: int
     HEIGHT: int
     ENTRY: Tuple[int, int]
@@ -14,6 +24,19 @@ class MazeConfig(TypedDict):
 
 
 def config_parser(filepath: str) -> MazeConfig:
+    """Parse, validate, and convert a key-value maze configuration file.
+
+    Args:
+        filepath (str): Path to the key-value configuration text file.
+
+    Returns:
+        MazeConfig: A strongly-typed dictionary containing validated settings.
+
+    Raises:
+        FileNotFoundError: If the configuration file does not exist.
+        ValueError: If file syntax is invalid, required keys are missing,
+            types cannot be converted, or coordinate values are out of bounds.
+    """
     if not os.path.exists(filepath):
         raise FileNotFoundError(f"Error: file with filepath"
                                 f"{filepath} not found!")
@@ -100,12 +123,3 @@ def config_parser(filepath: str) -> MazeConfig:
         "OUTPUT_FILE": output_file,
         "SEED": seed
         }
-
-
-if __name__ == "__main__":
-    import sys
-    try:
-        print(config_parser("/home/zscekic/core/a_maze_ing/config.txt"))
-    except (FileNotFoundError, ValueError) as err:
-        print(err, file=sys.stderr)
-        sys.exit(1)

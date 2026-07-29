@@ -5,6 +5,17 @@ from typing import List, Tuple, Optional, Dict
 def get_neighbors(maze: List[List[int]],
                   cell: Tuple[int, int]
                   ) -> List[Tuple[int, int]]:
+    """Return adjacent grid coordinates within the boundaries of the maze.
+
+    Args:
+        maze (List[List[int]]): Two-dimensional grid matrix
+                                representing the maze.
+        cell (Tuple[int, int]): Target coordinate as an (x, y) tuple.
+
+    Returns:
+        List[Tuple[int, int]]: List of valid adjacent (x, y) coordinates
+        within bounds.
+    """
     neighbors: List[Tuple[int, int]] = []
     x, y = cell
     directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
@@ -36,6 +47,20 @@ opposite_masks = {
 def is_walkable(maze: List[List[int]],
                 cell: Tuple[int, int],
                 neighbor_cell: Tuple[int, int]) -> bool:
+    """Determine whether movement between two adjacent
+    cells is unimpeded by walls.
+
+    Args:
+        maze (List[List[int]]): Two-dimensional grid matrix
+                                with integer wall bitmasks.
+        cell (Tuple[int, int]): Starting cell coordinate as an (x, y) tuple.
+        neighbor_cell (Tuple[int, int]): Adjacent destination cell
+                                         coordinate as an (x, y) tuple.
+
+    Returns:
+        bool: True if both cells have open
+        walls connecting them, False otherwise.
+    """
     curr_x, curr_y = cell
     nghbr_x, nghbr_y = neighbor_cell
     change = (nghbr_x - curr_x, nghbr_y - curr_y)
@@ -55,6 +80,19 @@ def solve_maze(
         start: Tuple[int, int],
         exit: Tuple[int, int]
         ) -> Optional[List[Tuple[int, int]] | None]:
+    """Find a shortest path from start to exit
+    using Breadth-First Search (BFS).
+
+    Args:
+        maze (List[List[int]]): Two-dimensional grid matrix
+                                representing the maze bitmasks.
+        start (Tuple[int, int]): Entrance grid coordinate as an (x, y) tuple.
+        exit (Tuple[int, int]): Exit grid coordinate as an (x, y) tuple.
+
+    Returns:
+        Optional[List[Tuple[int, int]] | None]: An ordered list of
+        path coordinates from start to exit, or None if no valid path exists.
+    """
     queue = deque([start])
     visited = {start}
     parent_map: Dict[Tuple[int, int], Tuple[int, int] | None] = {start: None}
