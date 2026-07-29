@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 import time
+from typing import List, Tuple
+from config_parser import MazeConfig
 
 COLOR_MAP = {
     "red": "\x1b[31m",
@@ -11,11 +13,16 @@ COLOR_MAP = {
 }
 
 
-def print_maze(maze, path, config, show_path=True, wall_color=None):
+def print_maze(maze: list[list[int]],
+               path: List[Tuple[int, int]] | None,
+               config: MazeConfig,
+               show_path: bool | None = True,
+               wall_color: str | None = None
+               ) -> None:
     color_code = COLOR_MAP.get(wall_color, "") if wall_color else ""
     reset_code = COLOR_MAP["reset"] if color_code else ""
 
-    def w(char):
+    def w(char: str) -> str:
         return f"{color_code}{char}{reset_code}" if color_code else char
 
     # Top border
@@ -52,7 +59,12 @@ def print_maze(maze, path, config, show_path=True, wall_color=None):
         print(line)
 
 
-def animate_path(maze, full_path, config, wall_color=None, delay=0.08):
+def animate_path(maze: List[List[int]],
+                 full_path: List[Tuple[int, int]],
+                 config: MazeConfig,
+                 wall_color: str | None = None,
+                 delay: int | float | None = 0.08
+                 ) -> None:
     if not full_path:
         return
     for i in range(1, len(full_path) + 1):
@@ -60,4 +72,5 @@ def animate_path(maze, full_path, config, wall_color=None, delay=0.08):
         partial_path = full_path[:i]
         print_maze(maze, partial_path, config, show_path=True,
                    wall_color=wall_color)
-        time.sleep(delay)
+        if delay is not None:
+            time.sleep(delay)

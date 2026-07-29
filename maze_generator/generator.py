@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 
 import random
+from config_parser import MazeConfig
+from typing import List, Dict, Any, cast
 
 
 class Cell():
-    def __init__(self):
+    def __init__(self) -> None:
         self.visited = False
         self.blocked = False  # for 42 pattern
         self.walls = {
@@ -16,7 +18,7 @@ class Cell():
 
 
 class MazeGenerator():
-    def __init__(self, config):
+    def __init__(self, config: MazeConfig) -> None:
         self.seed = config["SEED"]
         self.width = config["WIDTH"]
         self.height = config["HEIGHT"]
@@ -24,7 +26,7 @@ class MazeGenerator():
         self.entry = config["ENTRY"]
         self.exit = config["EXIT"]
 
-    def _set_42_pattern(self, maze):
+    def _set_42_pattern(self, maze: List[List[Cell]]) -> List[List[Cell]]:
         pattern_width = 7
         pattern_height = 5
         if self.height <= pattern_width and self.width <= pattern_height:
@@ -60,7 +62,7 @@ class MazeGenerator():
             maze[y+4][x+6].blocked = True
         return maze
 
-    def _get_starting_point(self, maze):
+    def _get_starting_point(self, maze: List[List[Cell]]) -> List[List[int]]:
         non_blocked_sells = []
         for y in range(0, self.height):
             for x in range(0, self.width):
@@ -68,7 +70,8 @@ class MazeGenerator():
                     non_blocked_sells.append([x, y])
         return non_blocked_sells
 
-    def _get_unvisited_neighbors(self, x, y, maze):
+    def _get_unvisited_neighbors(self, x: int, y: int, maze: List[List[Cell]]
+                                 ) -> List[Dict[str, Any]]:
         unvisited_neighbors = []
 
         if y > 0:
@@ -97,8 +100,8 @@ class MazeGenerator():
                                             "current_cell_direction": "east"})
         return unvisited_neighbors
 
-    def has_open_3x3(self, maze, x, y):
-        def is_open_3x3(maze, x, y):
+    def has_open_3x3(self, maze: List[List[Cell]], x: int, y: int) -> bool:
+        def is_open_3x3(maze: List[List[Cell]], x: int, y: int) -> bool:
             # x,y - top left corner position of 3x3 area
             # reject windows starting outside the maze
             if x < 0 or y < 0:
@@ -131,7 +134,8 @@ class MazeGenerator():
 
         return False
 
-    def _remove_random_walls(self, maze, walls_num):
+    def _remove_random_walls(self, maze: List[List[Cell]], walls_num: int
+                             ) -> List[List[Cell]]:
         removed = 0
         # to avoid cases when i cant remove given number of walls
         # without creating 3x3 hall
@@ -166,24 +170,28 @@ class MazeGenerator():
                                   "current_cell_direction": "east"})
 
             neighbor = random.choice(neighbors)
-            if maze[neighbor["y"]][neighbor["x"]].blocked:
+            nx = cast(int, neighbor["x"])
+            ny = cast(int, neighbor["y"])
+            c_dir: str = str(neighbor["current_cell_direction"])
+            n_dir: str = str(neighbor["neighbors_direction"])
+            if maze[ny][nx].blocked:
                 continue
-            if maze[y][x].walls[neighbor["current_cell_direction"]]:
-                maze[y][x].walls[neighbor["current_cell_direction"]] = False
-                (maze[neighbor["y"]][neighbor["x"]]
-                 .walls[neighbor["neighbors_direction"]]) = False
+            if maze[y][x].walls[c_dir]:
+                maze[y][x].walls[c_dir] = False
+                (maze[ny][nx]
+                 .walls[n_dir]) = False
                 if self.has_open_3x3(maze, x, y) or \
-                   self.has_open_3x3(maze, neighbor["x"], neighbor["y"]):
-                    maze[y][x].walls[neighbor["current_cell_direction"]] = True
-                    (maze[neighbor["y"]][neighbor["x"]]
-                     .walls[neighbor["neighbors_direction"]]) = True
+                   self.has_open_3x3(maze, nx, ny):
+                    maze[y][x].walls[c_dir] = True
+                    (maze[ny][nx]
+                     .walls[n_dir]) = True
                     count_3x3_open_areas += 1
                 else:
                     removed += 1
         return maze
 
-    def _cells_to_integers(self, maze):
-        maze_integer = [[] * self.width] * self.height
+    def _cells_to_integers(self, maze: List[List[Cell]]) -> List[List[int]]:
+        maze_integer: List[List[int]] = [[] * self.width] * self.height
         for y in range(self.height):
             maze_integer[y] = []
             for x in range(self.width):
@@ -199,7 +207,7 @@ class MazeGenerator():
                 maze_integer[y].append(value)
         return maze_integer
 
-    def generate(self, seed=None) -> list[list[int]]:
+    def generate(self, seed: int | None = None) -> list[list[int]]:
         if seed is not None:
             random.seed(seed)
         else:
@@ -218,7 +226,8 @@ class MazeGenerator():
         stack = []  # to save visited Cells
 
         while True:
-            neighbors = self._get_unvisited_neighbors(x, y, maze)
+            neighbors: List[Dict[str, Any]
+                            ] = self._get_unvisited_neighbors(x, y, maze)
 
             if neighbors:
                 neighbor = random.choice(neighbors)

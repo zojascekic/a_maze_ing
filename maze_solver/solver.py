@@ -54,14 +54,13 @@ def solve_maze(
         maze: List[List[int]],
         start: Tuple[int, int],
         exit: Tuple[int, int]
-        ) -> Optional[List[Tuple[int, int]]]:
+        ) -> Optional[List[Tuple[int, int]] | None]:
     queue = deque([start])
     visited = {start}
-    parent_map: Dict[Tuple[int, int],
-                     Optional[Tuple[int, int]]] = {start: None}
+    parent_map: Dict[Tuple[int, int], Tuple[int, int] | None] = {start: None}
 
     while queue:
-        current = queue.popleft()
+        current: Tuple[int, int] | None = queue.popleft()  # TODOOOO
         if current == exit:
             path = []
             while current is not None:
@@ -69,9 +68,11 @@ def solve_maze(
                 current = parent_map[current]
             path.reverse()
             return path
-        for nghbor in get_neighbors(maze, current):
-            if nghbor not in visited and is_walkable(maze, current, nghbor):
-                visited.add(nghbor)
-                parent_map[nghbor] = current
-                queue.append(nghbor)
+        if current is not None:
+            for nghbor in get_neighbors(maze, current):
+                if nghbor not in visited \
+                          and is_walkable(maze, current, nghbor):
+                    visited.add(nghbor)
+                    parent_map[nghbor] = current
+                    queue.append(nghbor)
     return None

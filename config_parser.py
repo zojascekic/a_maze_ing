@@ -60,10 +60,10 @@ def config_parser(filepath: str) -> MazeConfig:
             if len(exit_str) != 2:
                 raise ValueError("EXIT must be formatted as 'x,y'")
             exit_coords = (int(exit_str[0]), int(exit_str[1]))
-            perfect = config_dict["PERFECT"].lower()
-            if perfect in ("true", "1", "yes"):
+            val = config_dict["PERFECT"].lower()
+            if val in ("true", "1", "yes"):
                 perfect = True
-            elif perfect in ("false", "0", "no"):
+            elif val in ("false", "0", "no"):
                 perfect = False
             else:
                 raise ValueError("PERFECT must be True or False")

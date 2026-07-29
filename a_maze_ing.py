@@ -4,6 +4,7 @@ from config_parser import config_parser
 from maze_generator import MazeGenerator
 from maze_solver.solver import solve_maze
 from visualization.visualizer import print_maze, animate_path
+from typing import List, Tuple
 import random
 import subprocess
 import os
@@ -20,7 +21,7 @@ if __name__ == "__main__":
         path_showed = False
         color = None
 
-        def path_to_directions(path):
+        def path_to_directions(path: List[Tuple[int, int]]) -> str:
             directions = []
             for i in range(len(path) - 1):
                 x1, y1 = path[i]
@@ -38,7 +39,7 @@ if __name__ == "__main__":
                     directions.append("N")
             return "".join(directions)
 
-        def save_maze(maze, filename):
+        def save_maze(maze: List[List[int]], filename: str) -> None:
             with open(filename, "w", encoding="utf-8") as file:
                 for y in range(config["HEIGHT"]):
                     for x in range(config["WIDTH"]):
@@ -48,11 +49,12 @@ if __name__ == "__main__":
                     file.write('\n')
                 file.write('\n' + ",".join(map(str, start)) + '\n')
                 file.write(",".join(map(str, exit_cell)) + '\n')
-                file.write(path_to_directions(path))
+                if path is not None:
+                    file.write(path_to_directions(path))
 
         save_maze(maze, config["OUTPUT_FILE"])
 
-        def clear_screen():
+        def clear_screen() -> None:
             cmd = 'cls' if os.name == 'nt' else 'clear'
             subprocess.run(cmd, shell=True)
 
@@ -85,7 +87,8 @@ if __name__ == "__main__":
                 save_maze(maze, config["OUTPUT_FILE"])
             elif user_input == 's':
                 print("Showing path...")
-                animate_path(maze, path, config, wall_color=color)
+                if path is not None:
+                    animate_path(maze, path, config, wall_color=color)
                 path_showed = True
             elif user_input == 'h':
                 print("Hiding path...")
