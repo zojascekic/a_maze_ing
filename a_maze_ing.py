@@ -100,7 +100,6 @@ if __name__ == "__main__":
                 print("Regenerating maze...")
                 maze = gen.generate(random.randint(0, 10000))  # gen with rseed
                 # maze = gen.generate(random.seed(config[SEED]))
-                # # gen with rseed
                 path = solve_maze(maze, start, exit_cell)
                 path_showed = False
                 print_maze(maze, path, config, show_path=path_showed,
