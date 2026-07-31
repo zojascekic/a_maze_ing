@@ -3,7 +3,7 @@ MAIN := a_maze_ing.py
 CONFIG := config.txt
 
 install:
-	$(PYTHON) -m pip install -r requirements.txt
+	uv sync
 
 run:
 	$(PYTHON) $(MAIN) $(CONFIG)
