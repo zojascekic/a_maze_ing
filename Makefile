@@ -3,7 +3,7 @@ MAIN := a_maze_ing.py
 CONFIG := config.txt
 
 install:
-	uv sync
+	uv
 
 run:
 	$(PYTHON) $(MAIN) $(CONFIG)
