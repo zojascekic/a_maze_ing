@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-from config_parser import config_parser
 from mazegen import MazeGenerator
 from maze_solver.solver import solve_maze
 from visualization.visualizer import print_maze, animate_path
@@ -9,14 +8,13 @@ import random
 import subprocess
 import os
 
+
 if __name__ == "__main__":
     try:
-        config = config_parser("config.txt")
-
-        gen = MazeGenerator(config)
+        gen = MazeGenerator("config.txt")
         maze = gen.generate()
-        start = config["ENTRY"]
-        exit_cell = config["EXIT"]
+        start = gen.entry
+        exit_cell = gen.exit
         path = solve_maze(maze, start, exit_cell)
         path_showed = False
         color = None
@@ -30,7 +28,8 @@ if __name__ == "__main__":
                 coordinates forming a continuous path.
 
             Returns:
-                str: String of directional characters
+                str: String of directional charactersexcept Exception as e:
+#         print(f"\n\x1b[1;31mAn unexpected error occurred:\x1b[0m {e}")
                 representing step-by-step movements.
             """
             directions = []
@@ -61,8 +60,8 @@ if __name__ == "__main__":
                                 to write the formatted maze data.
             """
             with open(filename, "w", encoding="utf-8") as file:
-                for y in range(config["HEIGHT"]):
-                    for x in range(config["WIDTH"]):
+                for y in range(gen.height):
+                    for x in range(gen.width):
                         line = ''
                         line += format(maze[y][x], "X")
                         file.write(line)
@@ -72,7 +71,7 @@ if __name__ == "__main__":
                 if path is not None:
                     file.write(path_to_directions(path))
 
-        save_maze(maze, config["OUTPUT_FILE"])
+        save_maze(maze, gen.output_file)
 
         def clear_screen() -> None:
             """Clear the terminal screen buffer using OS-specific commands."""
@@ -81,7 +80,7 @@ if __name__ == "__main__":
 
         while True:
             clear_screen()
-            print_maze(maze, path, config, show_path=path_showed,
+            print_maze(maze, path, gen, show_path=path_showed,
                        wall_color=color)
 
             user_input = input(
@@ -102,18 +101,18 @@ if __name__ == "__main__":
                 # maze = gen.generate(random.seed(config[SEED]))
                 path = solve_maze(maze, start, exit_cell)
                 path_showed = False
-                print_maze(maze, path, config, show_path=path_showed,
+                print_maze(maze, path, gen, show_path=path_showed,
                            wall_color=color)
-                save_maze(maze, config["OUTPUT_FILE"])
+                save_maze(maze, gen.output_file)
             elif user_input == 's':
                 print("Showing path...")
                 if path is not None:
-                    animate_path(maze, path, config, wall_color=color)
+                    animate_path(maze, path, gen, wall_color=color)
                 path_showed = True
             elif user_input == 'h':
                 print("Hiding path...")
                 path_showed = False
-                print_maze(maze, None, config,
+                print_maze(maze, None, gen,
                            show_path=False, wall_color=color)
             elif user_input == 'c':
                 print("Changing wall color...")
@@ -127,7 +126,7 @@ if __name__ == "__main__":
                     print("You entered invalid color... "
                           "Choose red, green, blue or yellow")
                     continue
-                print_maze(maze, path, config,
+                print_maze(maze, path, gen,
                            show_path=path_showed, wall_color=color)
             else:
                 while input("Invalid input. Press Enter to try again... "

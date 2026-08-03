@@ -2,7 +2,7 @@
 
 import time
 from typing import List, Tuple
-from config_parser import MazeConfig
+from mazegen import MazeGenerator
 
 COLOR_MAP = {
     "red": "\x1b[31m",
@@ -15,7 +15,7 @@ COLOR_MAP = {
 
 def print_maze(maze: list[list[int]],
                path: List[Tuple[int, int]] | None,
-               config: MazeConfig,
+               config: MazeGenerator,
                show_path: bool | None = True,
                wall_color: str | None = None
                ) -> None:
@@ -50,16 +50,16 @@ def print_maze(maze: list[list[int]],
         return f"{color_code}{char}{reset_code}" if color_code else char
 
     # Top border
-    print(w("+") + w("---+") * config["WIDTH"])
+    print(w("+") + w("---+") * config.width)
 
-    for y in range(config["HEIGHT"]):
+    for y in range(config.height):
         # vertical walls
         line = w("|")
-        for x in range(config["WIDTH"]):
+        for x in range(config.width):
             # entry coordinates
-            if ((x, y) == config["ENTRY"]):
+            if ((x, y) == config.entry):
                 line += '\x1b[32m█S█\x1b[0m'
-            elif ((x, y) == config["EXIT"]):
+            elif ((x, y) == config.exit):
                 line += '\x1b[35m█E█\x1b[0m'
             elif path and ((x, y) in path) and show_path:
                 line += '\x1b[38;5;229m███\x1b[0m'
@@ -75,7 +75,7 @@ def print_maze(maze: list[list[int]],
 
         # horizontal walls
         line = w("+")
-        for x in range(config["WIDTH"]):
+        for x in range(config.width):
             if maze[y][x] in [4, 5, 6, 7, 12, 13, 14, 15]:  # south wall closed
                 line += w("---+")
             else:
@@ -85,7 +85,7 @@ def print_maze(maze: list[list[int]],
 
 def animate_path(maze: List[List[int]],
                  full_path: List[Tuple[int, int]],
-                 config: MazeConfig,
+                 config: MazeGenerator,
                  wall_color: str | None = None,
                  delay: int | float | None = 0.08
                  ) -> None:

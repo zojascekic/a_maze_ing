@@ -15,7 +15,7 @@ clean:
 	find . -type d -name "__pycache__" -prune -exec rm -rf {} +
 	rm -rf .mypy_cache
 	rm -rf maze.txt
-	rm -rf build dist *.egg-info
+	rm -rf *.egg-info
 
 build:
 	$(PYTHON) -m build

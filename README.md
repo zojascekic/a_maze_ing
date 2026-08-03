@@ -89,6 +89,10 @@ The renderer includes a step-by-step path animation engine (`animate_path`):
 
 ## Instructions
 
+```
+make install
+make run
+```
 
 ## 👥 Team & Contributions
 

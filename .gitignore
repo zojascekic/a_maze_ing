@@ -7,8 +7,6 @@ venv/
 .venv/
 
 # 3. Packaging & Wheel Build Output (created when running 'python -m build')
-build/
-dist/
 *.egg-info/
 
 # 4. Linter Caches (created when running mypy or pytest)
