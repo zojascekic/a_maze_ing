@@ -1,3 +1,5 @@
-from mazegen.generator import MazeGenerator, MazeConfig
+from mazegen.generator import MazeGenerator
+from mazegen.config_parser import MazeConfig
+from mazegen.solver import solve_maze
 
-__all__ = ["MazeGenerator", "MazeConfig"]
+__all__ = ["MazeGenerator", "MazeConfig", "solve_maze"]

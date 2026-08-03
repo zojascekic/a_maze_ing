@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from mazegen import MazeGenerator
-from maze_solver.solver import solve_maze
+from mazegen.solver import solve_maze
 from visualization.visualizer import print_maze, animate_path
 from typing import List, Tuple
 import random

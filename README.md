@@ -87,12 +87,57 @@ The renderer includes a step-by-step path animation engine (`animate_path`):
 * **Terminal Clearing:** Uses the `\033[H\033[J` ANSI escape sequence to reset the cursor to the top-left and clear the screen between frames for smooth, flicker-free rendering.
 * **Configurable Speed:** Supports continuous path progression controlled by a customizable time delay (defaulting to `0.08s` per step).
 
-## Instructions
+---
+# Instructions
 
-```
+Clone the project and install the Python dependencies:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
 make install
 make run
 ```
+
+
+The generator can be imported directly from the package:
+First copy .whl and .tar.gz files to your folder and install mazegen:
+```bash
+pip install mazegen-1.0.0-py3-none-any.whl
+```
+Add config.txt file to your folder.
+
+Usage example:
+```python
+from mazegen.generator import MazeGenerator
+from mazegen.solver import solve_maze
+
+try:
+    gen = MazeGenerator("config.txt")
+    maze = gen.generate()
+    # The maze is a 2D list of integer bitmasks
+    print(maze)
+    start = gen.entry
+    exit_cell = gen.exit
+    path = solve_maze(maze, start, exit_cell)
+    # The path is list of tuples of solving path cells
+    print(path)
+except Exception as e:
+    print(e)
+```
+
+Use a configuration file to set the maze dimensions, start/end positions, perfect mode, and seed:
+
+```text
+WIDTH=12
+HEIGHT=12
+ENTRY=0,0
+EXIT=11,11
+PERFECT=True
+OUTPUT_FILE=maze.txt
+SEED=42
+```
+
 
 ## 👥 Team & Contributions
 
