@@ -12,9 +12,9 @@ debug:
 	$(PYTHON) -m pdb $(MAIN) $(CONFIG)
 
 clean:
-	rm -rf __pycache__
+	find . -type d -name "__pycache__" -prune -exec rm -rf {} +
 	rm -rf .mypy_cache
-	rm -rf output_maze.txt
+	rm -rf maze.txt
 	rm -rf build dist *.egg-info
 
 build:
@@ -22,10 +22,10 @@ build:
 
 lint:
 	flake8 .
-	mypy . --warn-return-any --warn-unused-ignores --ignore-missing-imports --disallow-untyped-defs --check-untyped-defs
+	$(PYTHON) -m mypy . --warn-return-any --warn-unused-ignores --ignore-missing-imports --disallow-untyped-defs --check-untyped-defs
 
 lint-strict:
 	flake8 .
-	mypy . --strict
+	$(PYTHON) -m mypy . --strict
 
 .PHONY: install run debug clean build lint lint-strict

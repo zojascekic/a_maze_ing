@@ -132,6 +132,7 @@ The following references were useful for understanding and implementing the func
 - https://peps.python.org/pep-0257/
 - https://dev.to/dev_neil_a/python-how-to-adding-color-and-styles-to-terminal-text-3699
 - https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797
+- https://aryanab.medium.com/maze-generation-recursive-backtracking-5981bc5cc766
 
 #### AI usage
 ChatGPT and Gemini was used for:
