@@ -19,4 +19,4 @@ PERFECT=False
 OUTPUT_FILE=maze.txt
 
 # Number using which we can create the same maze (optional)
-#SEED=42
+SEED=42

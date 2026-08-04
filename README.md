@@ -50,11 +50,11 @@ The application parses a plain text configuration file to parameterize maze gene
 
 ---
 
-### 🎨 Visual Representation & Terminal Rendering
+## 🎨 Visual Representation & Terminal Rendering
 
 The project features a lightweight, ANSI-powered terminal renderer that transforms the integer wall bitmask matrix into a crisp 2D visual layout directly in your console.
 
-## 🧱 ASCII Grid Construction
+### 🧱 ASCII Grid Construction
 
 Because standard terminal characters cannot combine cell centers and outer walls into a single character space, the grid is rendered row-by-row using a structured block layout:
 
@@ -101,7 +101,7 @@ make run
 
 
 The generator can be imported directly from the package:
-First copy .whl and .tar.gz files to your folder and install mazegen:
+First copy .whl file to your folder and install mazegen:
 ```bash
 pip install mazegen-1.0.0-py3-none-any.whl
 ```
@@ -149,7 +149,7 @@ This project was developed collaboratively by **Diana (dvasilev)** and **Zoja (z
 
 | Team Member | Core Responsibilities & Contributions |
 | :--- | :--- |
-| **dvasilev** | • Designed and implemented the **Maze Generation** logic (Iterative Backtracker DFS, 3x3 hall prevention, and '42' pattern embedding).<br>• Structured data handling and conversion for **Hexadecimal/Bitmask** output.<br>• Co-developed the **Terminal Visualizer** engine. |
+| **dvasilev** | • Designed and implemented the **Maze Generation** logic (Iterative Backtracker DFS, 3x3 hall prevention, and '42' pattern embedding).<br>• Structured data handling and conversion for **Hexadecimal/Bitmask** output.<br>• Co-developed the **Terminal Visualizer** engine.<br>• Designed and structured **Makefile**. |
 | **zscekic** | • Developed the **Maze Solver** module (Shortest-path search & path reconstruction).<br>• Built the **Configuration Parser** to validate and load parameters safely.<br>• Set up the **Virtual Environment (`venv`)**, package structure, and project build.<br>• Authored the complete project **`README.md`** documentation.<br>• Co-developed the **Terminal Visualizer** engine. |
 
 ---

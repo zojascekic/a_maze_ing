@@ -59,7 +59,6 @@ class MazeGenerator():
         self.exit = config["EXIT"]
         self.output_file = config["OUTPUT_FILE"]
 
-
     def _set_42_pattern(self, maze: List[List[Cell]]) -> List[List[Cell]]:
         """Embed a blocked numerical "42" shape into the grid layout.
 
